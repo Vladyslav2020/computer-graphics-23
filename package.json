@@ -2,8 +2,9 @@
   "name": "labs",
   "version": "1.0.0",
   "description": "Computer Graphics 2023",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
+    "start": "tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/Vladyslav2020/computer-graphics-23/issues"
   },
-  "homepage": "https://github.com/Vladyslav2020/computer-graphics-23#readme"
+  "homepage": "https://github.com/Vladyslav2020/computer-graphics-23#readme",
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  }
 }

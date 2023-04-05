@@ -1,0 +1,23 @@
+{
+  "name": "labs",
+  "version": "1.0.0",
+  "description": "Computer Graphics 2023",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vladyslav2020/computer-graphics-23.git"
+  },
+  "keywords": [
+    "ray tracing",
+    "computer graphics"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vladyslav2020/computer-graphics-23/issues"
+  },
+  "homepage": "https://github.com/Vladyslav2020/computer-graphics-23#readme"
+}

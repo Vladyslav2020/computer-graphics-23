@@ -1,24 +1,28 @@
 import {Vector} from './src/primitives/vector';
-import {Sphere} from './src/shapes/sphere';
 import {Camera} from './src/graphic-tools/camera';
 import {Screen} from './src/graphic-tools/screen';
 import {RayTracer} from './src/ray-tracing/ray-tracer';
+import {Sphere} from "./src/shapes/sphere";
+import {Disc} from "./src/shapes/disc";
+import {Plane} from "./src/shapes/plane";
 
-const screenWidth = 100;
-const screenHeight = 100;
+const screenWidth = 40;
+const screenHeight = 40;
 const screen = new Screen(screenWidth, screenHeight);
 
 const cameraOrigin = new Vector(0, 0, 0);
 const cameraLookAt = new Vector(1, 0, 0);
 const camera = new Camera(cameraOrigin, cameraLookAt);
 
-const sphereCenter = new Vector(0, 0, 0);
-const sphereRadius = 1;
-const sphere = new Sphere(sphereCenter, sphereRadius);
-const objects = [sphere];
+const sphere = new Sphere(new Vector(0, 0, 20), 8);
+const disc = new Disc(new Vector(-15, 0, 15), new Vector(5, 0, -1), 5);
+const plane = new Plane(new Vector(1, 2, -1), new Vector(0, 0, 30));
+const objects = [sphere, disc, plane];
 
-const lightDirection = new Vector(1, 1, 1);
+const lightDirection = new Vector(1, -1, -1);
 
 const rayTracer = new RayTracer(screen, camera, objects, lightDirection);
 
+rayTracer.trace(false);
+console.log("------------------------------------------------------------")
 rayTracer.trace();

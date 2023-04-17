@@ -1,9 +1,9 @@
 import {Point} from "../primitives/point";
 import {Ray} from "../primitives/ray";
-import {IntersectBase} from "./intersect";
+import {ShapeBase} from "./shape";
 import {Vector} from "../primitives/vector";
 
-export class Sphere extends IntersectBase {
+export class Sphere extends ShapeBase {
     private readonly _center: Vector;
     private readonly _radius: number;
 

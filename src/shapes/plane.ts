@@ -30,7 +30,7 @@ export class Plane extends ShapeBase {
         return [];
     }
 
-    public getNormal(): Vector {
+    public getNormal(intersectionPoint: Point): Vector {
         return this._normal;
     }
 

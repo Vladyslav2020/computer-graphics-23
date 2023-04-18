@@ -37,7 +37,7 @@ export class Disc extends ShapeBase {
         return this._center;
     }
 
-    public getNormal(): Vector {
+    public getNormal(intersectionPoint: Point): Vector {
         return this._normal;
     }
 

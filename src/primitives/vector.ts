@@ -30,6 +30,14 @@ export class Vector {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
+    cross(other: Vector): Vector {
+        const x = this._y * other._z - this._z * other._y;
+        const y = this._z * other._x - this._x * other._z;
+        const z = this._x * other._y - this._y * other._x;
+        return new Vector(x, y, z);
+    }
+
+
     static cross(a: Vector, b: Vector): Vector {
         return new Vector(
             a.y * b.z - a.z * b.y,

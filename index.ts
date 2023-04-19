@@ -6,6 +6,8 @@ import {Sphere} from "./src/shapes/sphere";
 import {Disc} from "./src/shapes/disc";
 import {Plane} from "./src/shapes/plane";
 import {ConsoleImageWriter, ImageWriter} from "./src/graphic-tools/image-writer";
+import {Light} from "./src/graphic-tools/light";
+import {colors} from "./src/graphic-tools/colors";
 
 const screenWidth = 40;
 const screenHeight = 40;
@@ -21,8 +23,9 @@ const plane = new Plane(new Vector(1, 2, -1), new Vector(0, 0, 30));
 const objects = [sphere, disc, plane];
 
 const lightDirection = new Vector(1, -1, -1);
+const light = new Light(lightDirection.normalize(), colors.white);
 
-const rayTracer = new RayTracer(screen, camera, objects, lightDirection);
+const rayTracer = new RayTracer(screen, camera, objects, light);
 
 const imageWriter: ImageWriter = new ConsoleImageWriter();
 

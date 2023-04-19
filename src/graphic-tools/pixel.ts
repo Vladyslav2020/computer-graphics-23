@@ -1,40 +1,42 @@
-type RGBColor = {
+export type RGBColor = {
     r: number;
     g: number;
     b: number;
 }
 
 export class Pixel {
-    private _value: number;
+    private _rgbColor: RGBColor;
+    private _intensity: number;
 
-    constructor(value: number) {
-        this._value = value;
+    constructor(rgbColor: RGBColor, intensity: number) {
+        this._rgbColor = rgbColor;
+        this._intensity = intensity;
     }
 
-    get value(): number {
-        return this._value;
+    get rgbColor(): RGBColor {
+        return this._rgbColor;
     }
 
-    set value(value: number) {
-        this._value = value;
+    set rgbColor(value: RGBColor) {
+        this._rgbColor = value;
     }
 
-    getRGBColor(): RGBColor {
-        return {
-            r: this._value * 255,
-            g: this._value * 255,
-            b: this._value * 255,
-        };
+    get intensity(): number {
+        return this._intensity;
+    }
+
+    set intensity(value: number) {
+        this._intensity = value;
     }
 
     getConsoleColor(): string {
-        if (this._value >= 0 && this._value < 0.2) {
+        if (this._intensity >= 0 && this._intensity < 0.2) {
             return '.';
-        } else if (this._value >= 0.2 && this._value < 0.5) {
+        } else if (this._intensity >= 0.2 && this._intensity < 0.5) {
             return '*';
-        } else if (this._value >= 0.5 && this._value < 0.8) {
+        } else if (this._intensity >= 0.5 && this._intensity < 0.8) {
             return 'O';
-        } else if (this._value >= 0.8) {
+        } else if (this._intensity >= 0.8) {
             return '#';
         } else {
             return ' ';

@@ -1,4 +1,3 @@
-import {Vector} from "../primitives/vector";
 import {Ray} from "../primitives/ray";
 import {Point} from "../primitives/point";
 import {Sphere} from "../shapes/sphere";
@@ -7,6 +6,8 @@ import {Screen} from "../graphic-tools/screen";
 import {Shape} from "../shapes/shape";
 import {Image} from "../graphic-tools/image";
 import {Pixel} from "../graphic-tools/pixel";
+import {Light} from "../graphic-tools/light";
+import {colors} from "../graphic-tools/colors";
 
 type Intersection = {
     intersection_point: Point | null;
@@ -17,13 +18,13 @@ export class RayTracer {
     private readonly _screen: Screen;
     private readonly _camera: Camera;
     private readonly _shapes: Shape[];
-    private readonly _lightDirection: Vector;
+    private readonly _light: Light;
 
-    constructor(screen: Screen, camera: Camera, shapes: Shape[], lightDirection: Vector) {
+    constructor(screen: Screen, camera: Camera, shapes: Shape[], light: Light) {
         this._screen = screen;
         this._camera = camera;
         this._shapes = shapes;
-        this._lightDirection = lightDirection.normalize();
+        this._light = light;
     }
 
     public trace(considerLighting = true): Image {
@@ -50,13 +51,13 @@ export class RayTracer {
         considerLighting: boolean
     }) {
         if (!this.intersectionFound(closestIntersection)) {
-            image.pixels[y][x].value = -1;
+            image.pixels[y][x].intensity = -1;
             return;
         }
         if (considerLighting) {
             this.setPixelAccordingToLighting({image, x, y, closestIntersection});
         } else {
-            image.pixels[y][x].value = 1;
+            image.pixels[y][x].intensity = 1;
         }
     }
 
@@ -68,7 +69,7 @@ export class RayTracer {
         return {
             width: this._screen.width,
             height: this._screen.height,
-            pixels: new Array(this._screen.height).fill(null).map(() => new Array(this._screen.width).fill(null).map(() => new Pixel(-1)))
+            pixels: new Array(this._screen.height).fill(null).map(() => new Array(this._screen.width).fill(null).map(() => new Pixel(colors.white, -1)))
         };
     }
 
@@ -79,7 +80,7 @@ export class RayTracer {
         closestIntersection: Intersection
     }) {
         const normal = (closestIntersection.shape as Sphere).getNormal(closestIntersection.intersection_point as Point);
-        image.pixels[y][x].value = normal.dot(this._lightDirection);
+        image.pixels[y][x].intensity = normal.dot(this._light.direction);
     }
 
     private getClosestIntersection(ray: Ray): Intersection {
@@ -114,7 +115,7 @@ export class RayTracer {
         return this._shapes;
     }
 
-    get lightDirection() {
-        return this._lightDirection;
+    get light(): Light {
+        return this._light;
     }
 }

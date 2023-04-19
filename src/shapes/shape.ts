@@ -8,16 +8,16 @@ export interface Shape {
 
     getNormal(intersectionPoint: Point): Vector;
 
-    getIntersection(ray: Ray): Point[];
+    getIntersection(ray: Ray): Point | null;
 }
 
 export abstract class ShapeBase implements Shape {
 
     hasIntersection(ray: Ray): boolean {
-        return this.getIntersection(ray).length > 0;
+        return !!this.getIntersection(ray)
     }
 
     abstract getNormal(intersectionPoint: Point): Vector;
 
-    abstract getIntersection(ray: Ray): Point[];
+    abstract getIntersection(ray: Ray): Point | null;
 }

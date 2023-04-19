@@ -13,7 +13,7 @@ export class Sphere extends ShapeBase {
         this._radius = radius;
     }
 
-    getIntersection(ray: Ray): Point[] {
+    getIntersection(ray: Ray): Point | null {
         const centerToOrigin = Vector.of(this._center, ray.origin);
         const a = Vector.dot(ray.direction, ray.direction);
         const b = 2 * Vector.dot(ray.direction, centerToOrigin);
@@ -22,23 +22,17 @@ export class Sphere extends ShapeBase {
         const discriminant = b ** 2 - 4 * a * c;
 
         if (discriminant < 0) {
-            return [];
+            return null;
         }
 
         const t1 = (-b + Math.sqrt(discriminant)) / (2 * a);
         const t2 = (-b - Math.sqrt(discriminant)) / (2 * a);
 
-        const intersectionPoints: Point[] = [];
-
-        if (t1 >= 0) {
-            intersectionPoints.push(ray.getPoint(t1));
+        if (t1 >= 0 && t1 <= t2) {
+            return ray.getPoint(t1);
         }
 
-        if (t2 >= 0) {
-            intersectionPoints.push(ray.getPoint(t2));
-        }
-
-        return intersectionPoints;
+        return ray.getPoint(t2);
     }
 
     getNormal(intersectionPoint: Point): Vector {

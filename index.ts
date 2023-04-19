@@ -5,6 +5,7 @@ import {RayTracer} from './src/ray-tracing/ray-tracer';
 import {Sphere} from "./src/shapes/sphere";
 import {Disc} from "./src/shapes/disc";
 import {Plane} from "./src/shapes/plane";
+import {ConsoleImageWriter, ImageWriter} from "./src/graphic-tools/image-writer";
 
 const screenWidth = 40;
 const screenHeight = 40;
@@ -23,6 +24,10 @@ const lightDirection = new Vector(1, -1, -1);
 
 const rayTracer = new RayTracer(screen, camera, objects, lightDirection);
 
-rayTracer.trace(false);
+const imageWriter: ImageWriter = new ConsoleImageWriter();
+
+let image = rayTracer.trace(false);
+imageWriter.write(image);
 console.log("------------------------------------------------------------")
-rayTracer.trace();
+image = rayTracer.trace();
+imageWriter.write(image);

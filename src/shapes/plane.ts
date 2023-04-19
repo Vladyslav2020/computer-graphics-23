@@ -15,19 +15,18 @@ export class Plane extends ShapeBase {
         this._origin = point;
     }
 
-    getIntersection(ray: Ray): Point[] {
+    getIntersection(ray: Ray): Point | null {
         const denominator = Vector.dot(ray.direction, this._normal);
 
         if (denominator > ACCURACY || denominator < -ACCURACY) {
             const diff = Vector.subtract(this._origin, ray.origin);
             const t = Vector.dot(diff, this._normal) / denominator;
             if (t >= 0) {
-                const intersectionPoint = ray.getPoint(t);
-                return [intersectionPoint];
+                return ray.getPoint(t);
             }
         }
 
-        return [];
+        return null;
     }
 
     public getNormal(intersectionPoint: Point): Vector {

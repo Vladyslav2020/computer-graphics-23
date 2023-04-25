@@ -12,6 +12,16 @@ export class ConsoleImageWriter implements ImageWriter {
     }
 }
 
+export class TextFileImageWriter implements ImageWriter {
+
+    write(image: Image): void {
+        const filename = "out/console-output.txt";
+        const fileContent = image.pixels.map(row => row.map(pixel => pixel.getConsoleColor()).join('')).join('\n');
+        fs.writeFileSync(filename, fileContent, 'utf-8');
+    }
+}
+
+
 export class PPMImageWriter implements ImageWriter {
     write(image: Image): void {
         const filename = 'out/result.ppm';
@@ -20,7 +30,7 @@ export class PPMImageWriter implements ImageWriter {
 
         const pixels = image.pixels.flat();
         const pixelsInPpmFormat = pixels.map((pixel) => {
-            const { r, g, b } = pixel.rgbColor;
+            const {r, g, b} = pixel.rgbColor;
             const rInPpmFormat = Math.min(Math.round(r), MAX_COLOR_VALUE);
             const gInPpmFormat = Math.min(Math.round(g), MAX_COLOR_VALUE);
             const bInPpmFormat = Math.min(Math.round(b), MAX_COLOR_VALUE);

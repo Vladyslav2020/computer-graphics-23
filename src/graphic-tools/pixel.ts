@@ -14,7 +14,11 @@ export class Pixel {
     }
 
     get rgbColor(): RGBColor {
-        return this._rgbColor;
+        return {
+            r: Math.max(this._rgbColor.r * this._intensity, 0),
+            g: Math.max(this._rgbColor.g * this._intensity, 0),
+            b: Math.max(this._rgbColor.b * this._intensity, 0),
+        };
     }
 
     set rgbColor(value: RGBColor) {

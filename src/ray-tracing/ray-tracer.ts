@@ -1,13 +1,12 @@
 import {Ray} from "../primitives/ray";
 import {Point} from "../primitives/point";
-import {Sphere} from "../shapes/sphere";
 import {Camera} from "../graphic-tools/camera";
 import {Screen} from "../graphic-tools/screen";
 import {Shape} from "../shapes/shape";
 import {Image} from "../graphic-tools/image";
 import {Pixel} from "../graphic-tools/pixel";
 import {Light} from "../graphic-tools/light";
-import {colors} from "../graphic-tools/colors";
+import {Vector} from "../primitives/vector";
 
 type Intersection = {
     intersection_point: Point | null;
@@ -35,30 +34,39 @@ export class RayTracer {
 
                 let closestIntersection = this.getClosestIntersection(ray);
 
-                this.setPixel({
-                    image, x, y, closestIntersection, considerLighting
-                });
+                image.pixels[y][x].intensity = this.getColorIntensity({closestIntersection, considerLighting});
             }
         }
         return image;
     }
 
-    private setPixel({image, x, y, closestIntersection, considerLighting}: {
-        image: Image,
-        x: number,
-        y: number,
-        closestIntersection: Intersection,
-        considerLighting: boolean
-    }) {
+    private getColorIntensity({considerLighting, closestIntersection}: {
+        considerLighting: boolean;
+        closestIntersection: Intersection
+    }): number {
         if (!this.intersectionFound(closestIntersection)) {
-            image.pixels[y][x].intensity = -1;
-            return;
+            return -1;
         }
         if (considerLighting) {
-            this.setPixelAccordingToLighting({image, x, y, closestIntersection});
+            return this.getIntensityAccordingToLighting({closestIntersection});
         } else {
-            image.pixels[y][x].intensity = 1;
+            return 1;
         }
+    }
+
+    private getIntensityAccordingToLighting({closestIntersection}: {
+        closestIntersection: Intersection
+    }): number {
+        if (this.isInShade(closestIntersection)) {
+            return -1;
+        }
+        const normal = (closestIntersection.shape as Shape).getNormal(closestIntersection.intersection_point as Point).scale(-1);
+        return normal.dot(this._light.direction);
+    }
+
+    private isInShade(closestIntersection: Intersection): boolean {
+        const ray = new Ray(Vector.fromPoint(closestIntersection.intersection_point as Point), this._light.direction.scale(-1));
+        return this.hasIntersection(ray, closestIntersection.shape as Shape);
     }
 
     private intersectionFound(closestIntersection: Intersection): boolean {
@@ -69,18 +77,8 @@ export class RayTracer {
         return {
             width: this._screen.width,
             height: this._screen.height,
-            pixels: new Array(this._screen.height).fill(null).map(() => new Array(this._screen.width).fill(null).map(() => new Pixel(colors.white, -1)))
+            pixels: new Array(this._screen.height).fill(null).map(() => new Array(this._screen.width).fill(null).map(() => new Pixel(this._light.color, -1)))
         };
-    }
-
-    private setPixelAccordingToLighting({image, x, y, closestIntersection}: {
-        image: Image,
-        x: number,
-        y: number,
-        closestIntersection: Intersection
-    }) {
-        const normal = (closestIntersection.shape as Sphere).getNormal(closestIntersection.intersection_point as Point);
-        image.pixels[y][x].intensity = normal.dot(this._light.direction);
     }
 
     private getClosestIntersection(ray: Ray): Intersection {
@@ -101,6 +99,15 @@ export class RayTracer {
             }
         }
         return {intersection_point: closestIntersection, shape: closestShape};
+    }
+
+    private hasIntersection(ray: Ray, ...shapesToExclude: Shape[]): boolean {
+        for (let shape of this._shapes) {
+            if (shape.hasIntersection(ray) && !shapesToExclude.some(shapeToExclude => shapeToExclude === shape)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     get screen() {

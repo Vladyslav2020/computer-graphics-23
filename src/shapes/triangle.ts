@@ -12,15 +12,16 @@ export class Triangle extends ShapeBase {
 
     constructor(p1: Vector, p2: Vector, p3: Vector) {
         super();
-        this._vertex1 = p1;
-        this._vertex2 = p2;
-        this._vertex3 = p3;
+        const factor = 500;
+        this._vertex1 = p1.scale(factor);
+        this._vertex2 = p2.scale(factor);
+        this._vertex3 = p3.scale(factor);
     }
 
     getNormal(intersectionPoint: Point): Vector {
-        const v1 = Vector.of(this._vertex2, this._vertex1);
-        const v2 = Vector.of(this._vertex3, this._vertex1);
-        return v1.cross(v2).normalize();
+        const edge1 = Vector.of(this._vertex1, this._vertex2);
+        const edge2 = Vector.of(this._vertex1, this._vertex3);
+        return edge1.cross(edge2).normalize();
     }
 
     getIntersection(ray: Ray): Point | null {
@@ -47,5 +48,17 @@ export class Triangle extends ShapeBase {
             return ray.getPoint(t);
         }
         return null;
+    }
+
+    get vertex1(): Vector {
+        return this._vertex1;
+    }
+
+    get vertex2(): Vector {
+        return this._vertex2;
+    }
+
+    get vertex3(): Vector {
+        return this._vertex3;
     }
 }

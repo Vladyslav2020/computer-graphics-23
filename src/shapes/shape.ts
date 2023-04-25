@@ -9,6 +9,16 @@ export interface Shape {
     getNormal(intersectionPoint: Point): Vector;
 
     getIntersection(ray: Ray): Point | null;
+
+    move(dx: number, dy: number, dz: number): Shape;
+
+    scale(sx: number, sy: number, sz: number): Shape;
+
+    rotateX(theta: number): Shape;
+
+    rotateY(theta: number): Shape;
+
+    rotateZ(theta: number): Shape;
 }
 
 export abstract class ShapeBase implements Shape {
@@ -20,4 +30,14 @@ export abstract class ShapeBase implements Shape {
     abstract getNormal(intersectionPoint: Point): Vector;
 
     abstract getIntersection(ray: Ray): Point | null;
+
+    abstract move(dx: number, dy: number, dz: number): Shape;
+
+    abstract scale(sx: number, sy: number, sz: number): Shape;
+
+    abstract rotateX(theta: number): Shape;
+
+    abstract rotateY(theta: number): Shape;
+
+    abstract rotateZ(theta: number): Shape;
 }

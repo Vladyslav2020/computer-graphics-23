@@ -75,6 +75,14 @@ export class Vector {
         return this.x * vector.x + this.y * vector.y + this.z * vector.z;
     }
 
+    public transform(matrix: number[][]): Vector {
+        const x = matrix[0][0] * this._x + matrix[0][1] * this._y + matrix[0][2] * this._z;
+        const y = matrix[1][0] * this._x + matrix[1][1] * this._y + matrix[1][2] * this._z;
+        const z = matrix[2][0] * this._x + matrix[2][1] * this._y + matrix[2][2] * this._z;
+        return new Vector(x, y, z);
+    }
+
+
     add(vector: Vector) {
         return new Vector(this.x + vector.x, this.y + vector.y, this.z + vector.z);
     }

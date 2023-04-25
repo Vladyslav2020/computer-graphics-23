@@ -5,14 +5,15 @@ import {RayTracer} from './src/ray-tracing/ray-tracer';
 import {Sphere} from "./src/shapes/sphere";
 import {Disc} from "./src/shapes/disc";
 import {Plane} from "./src/shapes/plane";
-import {ConsoleImageWriter, ImageWriter, PPMImageWriter} from "./src/graphic-tools/image-writer";
+import {ConsoleImageWriter, ImageWriter, PPMImageWriter, TextFileImageWriter} from "./src/graphic-tools/image-writer";
 import {Light} from "./src/graphic-tools/light";
 import {colors} from "./src/graphic-tools/colors";
 import {FileParser} from "./src/parsing/file-parser";
 import {Triangle} from "./src/shapes/triangle";
+import {MathUtils} from "./src/utils/math-utils";
 
-const screenWidth = 400;
-const screenHeight = 400;
+const screenWidth = 550;
+const screenHeight = 300;
 
 function printPrimitives() {
     const origin = new Vector(0, 0, 8);
@@ -52,28 +53,46 @@ function getPlane(objects: Triangle[]) {
     return new Plane(new Vector(0, 0, 1), new Vector(0, 0, lowestPointZ));
 }
 
+function transformShapes(shapes: Triangle[]) {
+    for (let i = 0; i < shapes.length; i++) {
+        shapes[i] = shapes[i].scale(500, 500, 500)
+            .rotateX(MathUtils.degToRad(90))
+            .move(10, 0, 0);
+    }
+}
+
 function printCow() {
-    // screen
+    // prepare screen
     const origin = new Vector(0, -15, 0);
     const screenNormal: Vector = new Vector(0, 1, 0);
     const screen = new Screen(screenWidth, screenHeight, origin, screenNormal);
 
-    // camera
+    // prepare camera
     const cameraOrigin = new Vector(0, -1000, 0);
     const cameraLookAt = new Vector(1, 0, 0);
     const camera = new Camera(cameraOrigin, cameraLookAt);
 
-    // light
+    // prepare light
     const lightDirection = new Vector(-0.2, 1, -0.3);
     const light = new Light(lightDirection.normalize(), colors.white);
 
-    // image processing
-    const ppmImageWriter: ImageWriter = new PPMImageWriter();
+    // parse .obj file
     const fileParser = new FileParser();
-    const objects = fileParser.parseOBJFile('input/cow.obj');
-    const plane = getPlane(objects);
-    const rayTracer = new RayTracer(screen, camera, [...objects, plane], light);
+    const shapes = fileParser.parseOBJFile('input/cow.obj');
+
+    // prepare shapes
+    transformShapes(shapes);
+
+    const plane = getPlane(shapes);
+    const rayTracer = new RayTracer(screen, camera, [...shapes, plane], light);
+
+    // perform ray tracing
     const image = rayTracer.trace();
+
+    // output results
+    const textFileImageWriter = new TextFileImageWriter();
+    textFileImageWriter.write(image);
+    const ppmImageWriter: ImageWriter = new PPMImageWriter();
     ppmImageWriter.write(image);
 }
 

@@ -1,4 +1,8 @@
-import {RGBColor} from "./pixel";
+export type RGBColor = {
+    r: number;
+    g: number;
+    b: number;
+}
 
 type PreDefinedColors = 'white' | 'black' | 'green' | 'red' | 'blue';
 export const colors: { [key in PreDefinedColors]: RGBColor } = {

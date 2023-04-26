@@ -1,4 +1,4 @@
-import {Vector} from "../primitives/vector";
+import {Vector} from "../../primitives/vector";
 
 export class Screen {
     private readonly _width: number;

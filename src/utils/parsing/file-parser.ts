@@ -1,5 +1,5 @@
-import {Triangle} from "../shapes/triangle";
-import {Vector} from "../primitives/vector";
+import {Triangle} from "../../shapes/triangle";
+import {Vector} from "../../primitives/vector";
 import * as fs from "fs";
 
 

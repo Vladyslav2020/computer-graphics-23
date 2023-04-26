@@ -1,5 +1,5 @@
-import {Vector} from "../primitives/vector.js";
-import {Ray} from "../primitives/ray";
+import {Vector} from "../../primitives/vector";
+import {Ray} from "../../primitives/ray";
 import {Screen} from "./screen";
 
 export class Camera {

@@ -1,4 +1,4 @@
-import {Pixel} from "./pixel";
+import {Pixel} from "../pixel";
 
 export interface Image {
     width: number;

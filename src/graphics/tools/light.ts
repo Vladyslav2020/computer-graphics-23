@@ -1,5 +1,5 @@
-import {Vector} from "../primitives/vector";
-import {RGBColor} from "./pixel";
+import {Vector} from "../../primitives/vector";
+import {RGBColor} from "../colors";
 
 export class Light {
     private readonly _direction: Vector;

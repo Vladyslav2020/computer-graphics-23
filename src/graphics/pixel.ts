@@ -1,8 +1,4 @@
-export type RGBColor = {
-    r: number;
-    g: number;
-    b: number;
-}
+import {RGBColor} from "./colors";
 
 export class Pixel {
     private _rgbColor: RGBColor;

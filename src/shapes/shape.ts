@@ -10,6 +10,8 @@ export interface Shape {
 
     getIntersection(ray: Ray): Point | null;
 
+    transform(matrix: number[][]): Shape;
+
     move(dx: number, dy: number, dz: number): Shape;
 
     scale(sx: number, sy: number, sz: number): Shape;
@@ -30,6 +32,8 @@ export abstract class ShapeBase implements Shape {
     abstract getNormal(intersectionPoint: Point): Vector;
 
     abstract getIntersection(ray: Ray): Point | null;
+
+    abstract transform(matrix: number[][]): Shape;
 
     abstract move(dx: number, dy: number, dz: number): Shape;
 

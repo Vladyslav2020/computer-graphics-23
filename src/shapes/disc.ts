@@ -73,6 +73,12 @@ export class Disc extends ShapeBase {
         return new Disc(newCenter, newNormal, this._radius);
     }
 
+    transform(matrix: number[][]): Disc {
+        const newCenter = this._center.transform(matrix);
+        const newNormal = this._normal.transform(matrix);
+        return new Disc(newCenter, newNormal, this._radius);
+    }
+
     get center(): Vector {
         return this._center;
     }

@@ -69,6 +69,11 @@ export class Sphere extends ShapeBase {
         return new Sphere(rotatedCenter, this._radius);
     }
 
+    transform(matrix: number[][]): Sphere {
+        const rotatedCenter = this._center.transform(matrix);
+        return new Sphere(rotatedCenter, this._radius);
+    }
+
     get center(): Vector {
         return this._center;
     }

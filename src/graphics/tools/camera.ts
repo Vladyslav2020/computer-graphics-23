@@ -20,6 +20,12 @@ export class Camera {
         return new Ray(this._origin, new Vector(rayDirection.x / rayDirNormalize, rayDirection.y / rayDirNormalize, rayDirection.z / rayDirNormalize));
     }
 
+    public transform(matrix: number[][]): Camera {
+        const transformedOrigin = this._origin.transform(matrix);
+        const transformedDirection = this._direction.transform(matrix);
+        return new Camera(transformedOrigin, transformedDirection);
+    }
+
     get origin(): Vector {
         return this._origin;
     }

@@ -64,6 +64,11 @@ export class Plane extends ShapeBase {
         return new Plane(newNormal, this._origin);
     }
 
+    transform(matrix: number[][]): Plane {
+        const newNormal = this._normal.transform(matrix);
+        return new Plane(newNormal, this._origin);
+    }
+
     get origin(): Vector {
         return this._origin;
     }

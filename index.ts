@@ -59,15 +59,21 @@ function getPlane(objects: Triangle[]) {
     return new Plane(new Vector(0, 0, 1), new Vector(0, 0, lowestPointZ));
 }
 
-function transformShapes(shapes: Triangle[]) {
+function transformShapes(shapes: Triangle[], transformMatrix: number[][]) {
     for (let i = 0; i < shapes.length; i++) {
-        shapes[i] = shapes[i].scale(500, 500, 500)
-            .rotateX(MathUtils.degToRad(90))
-            .move(10, 0, 0);
+        shapes[i] = shapes[i].transform(transformMatrix);
     }
 }
 
+function getTransformationMatrix() {
+    return MathUtils.multiplyMatrices(MathUtils.getScalingMatrix(500, 500, 500),
+        MathUtils.multiplyMatrices(MathUtils.getRotationXMatrix(MathUtils.degToRad(90)),
+            MathUtils.getTranslationMatrix(10, 0, 0)));
+}
+
 function printCow() {
+    const transformMatrix = getTransformationMatrix();
+
     // prepare screen
     const origin = new Vector(0, -15, 0);
     const screenNormal: Vector = new Vector(0, 1, 0);
@@ -80,14 +86,14 @@ function printCow() {
 
     // prepare light
     const lightDirection = new Vector(-0.2, 1, -0.3);
-    const light = new Light(lightDirection.normalize(), colors.white);
+    const light = new Light(lightDirection, colors.white);
 
     // parse .obj file
     const fileParser = new FileParser();
     const shapes = fileParser.parseOBJFile('input/cow.obj');
 
     // prepare shapes
-    transformShapes(shapes);
+    transformShapes(shapes, transformMatrix);
 
     const plane = getPlane(shapes);
     const rayTracer = new RayTracer(screen, camera, [...shapes, plane], light);

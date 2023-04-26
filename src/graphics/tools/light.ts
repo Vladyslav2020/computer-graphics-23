@@ -6,8 +6,13 @@ export class Light {
     private readonly _color: RGBColor;
 
     constructor(direction: Vector, color: RGBColor) {
-        this._direction = direction;
+        this._direction = direction.normalize();
         this._color = color;
+    }
+
+    public transform(matrix: number[][]): Light {
+        const transformedDirection = this._direction.transform(matrix);
+        return new Light(transformedDirection, this._color);
     }
 
     get direction(): Vector {

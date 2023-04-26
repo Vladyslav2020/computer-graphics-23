@@ -10,7 +10,6 @@ export class Triangle extends ShapeBase {
     private readonly _vertex1: Vector;
     private readonly _vertex2: Vector;
     private readonly _vertex3: Vector;
-
     constructor(p1: Vector, p2: Vector, p3: Vector) {
         super();
         this._vertex1 = p1;
@@ -89,6 +88,12 @@ export class Triangle extends ShapeBase {
         return new Triangle(rotatedVertex1, rotatedVertex2, rotatedVertex3);
     }
 
+    transform(matrix: number[][]): Triangle {
+        const rotatedVertex1 = this._vertex1.transform(matrix);
+        const rotatedVertex2 = this._vertex2.transform(matrix);
+        const rotatedVertex3 = this._vertex3.transform(matrix);
+        return new Triangle(rotatedVertex1, rotatedVertex2, rotatedVertex3);
+    }
 
     get vertex1(): Vector {
         return this._vertex1;

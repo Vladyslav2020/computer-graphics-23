@@ -17,9 +17,8 @@ import {colors} from "./src/graphics/colors";
 import {FileParser} from "./src/utils/parsing/file-parser";
 import {Triangle} from "./src/shapes/triangle";
 import {MathUtils} from "./src/utils/math-utils";
-import {PpmImageReader} from "./src/graphics/images/readers/image-reader";
 
-const screenWidth = 550;
+const screenWidth = 600;
 const screenHeight = 300;
 
 function printPrimitives() {
@@ -105,6 +104,4 @@ function printCow() {
     ppmImageWriter.write(image, 'out/result.ppm');
 }
 
-// printCow();
-const image = new PpmImageReader().read('out/cow-with-shades.ppm')
-new BMPImageWriter().write(image, 'out/cow-with-shades.bmp');
+printCow();

@@ -3,19 +3,21 @@ import * as fs from "fs";
 
 export interface ImageWriter {
 
-    write(image: Image): void;
+    write(image: Image, filename?: string): void;
 }
 
 export class ConsoleImageWriter implements ImageWriter {
-    write(image: Image): void {
+    write(image: Image, filename?: string): void {
         image.pixels.forEach(row => console.log(row.map(pixel => pixel.getConsoleColor()).join('')));
     }
 }
 
 export class TextFileImageWriter implements ImageWriter {
 
-    write(image: Image): void {
-        const filename = "out/console-output.txt";
+    write(image: Image, filename?: string): void {
+        if (!filename) {
+            return;
+        }
         const fileContent = image.pixels.map(row => row.map(pixel => pixel.getConsoleColor()).join('')).join('\n');
         fs.writeFileSync(filename, fileContent, 'utf-8');
     }
@@ -23,8 +25,10 @@ export class TextFileImageWriter implements ImageWriter {
 
 
 export class PPMImageWriter implements ImageWriter {
-    write(image: Image): void {
-        const filename = 'out/result.ppm';
+    write(image: Image, filename?: string): void {
+        if (!filename) {
+            return;
+        }
         const MAX_COLOR_VALUE = 255;
         const header = `P3\n${image.width} ${image.height}\n${MAX_COLOR_VALUE}\n`;
 

@@ -41,32 +41,9 @@ export class Sphere extends ShapeBase {
         return centerToIntersection.normalize();
     }
 
-    move(dx: number, dy: number, dz: number): Sphere {
-        const newCenter = this._center.add(new Vector(dx, dy, dz));
-        return new Sphere(newCenter, this._radius);
-    }
-
     scale(sx: number, sy: number, sz: number): Sphere {
         const newRadius = this._radius * Math.max(sx, sy, sz);
         return new Sphere(this._center, newRadius);
-    }
-
-    rotateX(theta: number): Sphere {
-        const rotationMatrix = MathUtils.getRotationXMatrix(theta);
-        const rotatedCenter = this._center.transform(rotationMatrix);
-        return new Sphere(rotatedCenter, this._radius);
-    }
-
-    rotateY(theta: number): Sphere {
-        const rotationMatrix = MathUtils.getRotationYMatrix(theta);
-        const rotatedCenter = this._center.transform(rotationMatrix);
-        return new Sphere(rotatedCenter, this._radius);
-    }
-
-    rotateZ(theta: number): Sphere {
-        const rotationMatrix = MathUtils.getRotationZMatrix(theta);
-        const rotatedCenter = this._center.transform(rotationMatrix);
-        return new Sphere(rotatedCenter, this._radius);
     }
 
     transform(matrix: number[][]): Sphere {

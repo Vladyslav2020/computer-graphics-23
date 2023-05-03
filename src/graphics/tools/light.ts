@@ -1,7 +1,8 @@
 import {Vector} from "../../primitives/vector";
 import {RGBColor} from "../colors";
+import {Transformable} from "../../shapes/transformable";
 
-export class Light {
+export class Light implements Transformable<Light> {
     private readonly _direction: Vector;
     private readonly _color: RGBColor;
 

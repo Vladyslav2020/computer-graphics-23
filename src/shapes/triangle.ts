@@ -49,45 +49,6 @@ export class Triangle extends ShapeBase {
         return edge1.cross(edge2).normalize();
     }
 
-    public move(dx: number, dy: number, dz: number): Triangle {
-        const translatedVertex1 = this._vertex1.add(new Vector(dx, dy, dz));
-        const translatedVertex2 = this._vertex2.add(new Vector(dx, dy, dz));
-        const translatedVertex3 = this._vertex3.add(new Vector(dx, dy, dz));
-        return new Triangle(translatedVertex1, translatedVertex2, translatedVertex3);
-    }
-
-    public scale(sx: number, sy: number, sz: number): Triangle {
-        const scalingMatrix = MathUtils.getScalingMatrix(sx, sy, sz);
-        const scaledVertex1 = this._vertex1.transform(scalingMatrix);
-        const scaledVertex2 = this._vertex2.transform(scalingMatrix);
-        const scaledVertex3 = this._vertex3.transform(scalingMatrix);
-        return new Triangle(scaledVertex1, scaledVertex2, scaledVertex3);
-    }
-
-    public rotateX(theta: number): Triangle {
-        const rotationMatrix = MathUtils.getRotationXMatrix(theta);
-        const rotatedVertex1 = this._vertex1.transform(rotationMatrix);
-        const rotatedVertex2 = this._vertex2.transform(rotationMatrix);
-        const rotatedVertex3 = this._vertex3.transform(rotationMatrix);
-        return new Triangle(rotatedVertex1, rotatedVertex2, rotatedVertex3);
-    }
-
-    public rotateY(theta: number): Triangle {
-        const rotationMatrix = MathUtils.getRotationYMatrix(theta);
-        const rotatedVertex1 = this._vertex1.transform(rotationMatrix);
-        const rotatedVertex2 = this._vertex2.transform(rotationMatrix);
-        const rotatedVertex3 = this._vertex3.transform(rotationMatrix);
-        return new Triangle(rotatedVertex1, rotatedVertex2, rotatedVertex3);
-    }
-
-    public rotateZ(theta: number): Triangle {
-        const rotationMatrix = MathUtils.getRotationZMatrix(theta);
-        const rotatedVertex1 = this._vertex1.transform(rotationMatrix);
-        const rotatedVertex2 = this._vertex2.transform(rotationMatrix);
-        const rotatedVertex3 = this._vertex3.transform(rotationMatrix);
-        return new Triangle(rotatedVertex1, rotatedVertex2, rotatedVertex3);
-    }
-
     transform(matrix: number[][]): Triangle {
         const rotatedVertex1 = this._vertex1.transform(matrix);
         const rotatedVertex2 = this._vertex2.transform(matrix);

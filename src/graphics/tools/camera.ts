@@ -1,8 +1,9 @@
 import {Vector} from "../../primitives/vector";
 import {Ray} from "../../primitives/ray";
 import {Screen} from "./screen";
+import {Transformable} from "../../shapes/transformable";
 
-export class Camera {
+export class Camera implements Transformable<Camera> {
     private readonly _origin: Vector;
     private readonly _direction: Vector;
 

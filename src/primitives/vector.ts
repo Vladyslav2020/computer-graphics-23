@@ -1,6 +1,7 @@
 import {Point} from "./point";
+import {Transformable} from "../shapes/transformable";
 
-export class Vector {
+export class Vector implements Transformable<Vector>{
     private readonly _x: number;
     private readonly _y: number;
     private readonly _z: number;

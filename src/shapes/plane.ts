@@ -2,7 +2,6 @@ import {Point} from "../primitives/point";
 import {Vector} from "../primitives/vector";
 import {Ray} from "../primitives/ray";
 import {ShapeBase} from "./shape";
-import {MathUtils} from "../utils/math-utils";
 
 const ACCURACY = 1e-6;
 

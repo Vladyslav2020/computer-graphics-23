@@ -2,7 +2,6 @@ import {Point} from "../primitives/point";
 import {Ray} from "../primitives/ray";
 import {ShapeBase} from "./shape";
 import {Vector} from "../primitives/vector";
-import {MathUtils} from "../utils/math-utils";
 
 export class Sphere extends ShapeBase {
     private readonly _center: Vector;

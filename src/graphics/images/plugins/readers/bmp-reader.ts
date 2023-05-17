@@ -37,3 +37,5 @@ export class BmpImageReader implements ImageReader {
         return pixels;
     }
 }
+
+export default new BmpImageReader();

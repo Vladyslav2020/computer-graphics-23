@@ -1,81 +1,61 @@
-import {Vector} from './src/primitives/vector';
-import {Camera} from './src/graphics/tools/camera';
-import {Screen} from './src/graphics/tools/screen';
-import {RayTracer} from './src/graphics/generating/ray-tracer';
-import {Plane} from "./src/shapes/plane";
-import {
-    BMPImageWriter,
-    ImageWriter,
-    PPMImageWriter,
-    TextFileImageWriter
-} from "./src/graphics/images/writers/image-writer";
-import {Light} from "./src/graphics/tools/light";
-import {colors} from "./src/graphics/colors";
-import {FileParser} from "./src/utils/parsing/file-parser";
-import {Triangle} from "./src/shapes/triangle";
-import {MathUtils} from "./src/utils/math-utils";
-import {Shape} from "./src/shapes/shape";
+import path from 'path';
+import {ImageExtensions} from "./src/graphics/images/image-extensions";
+import {ImagePluginLoader} from "./src/graphics/images/image-plugin-loader";
 
-const screenWidth = 600;
-const screenHeight = 350;
 
-function getPlane(objects: Shape[]) {
-    let lowestPointZ = Infinity;
-    for (let triangle of objects as Triangle[]) {
-        lowestPointZ = Math.min(lowestPointZ, triangle.vertex1.z, triangle.vertex2.z, triangle.vertex3.z);
+(async function main() {
+    const args = process.argv.slice(2);
+
+    let source: string | undefined;
+    let goalFormat: string | undefined;
+
+    if (args.length === 2) {
+        let splited = args[0].split('=');
+        if (splited[0] === '--source') {
+            source = splited[1];
+        }
+        splited = args[1].split('=');
+        if (splited[0] === '--goal-format') {
+            goalFormat = splited[1];
+        }
     }
-    return new Plane(new Vector(0, 0, 1), new Vector(0, 0, lowestPointZ));
-}
+    console.log('Source:', source);
+    console.log('Goal Format:', goalFormat);
 
-function transformShapes(shapes: Shape[], transformMatrix: number[][]) {
-    for (let i = 0; i < shapes.length; i++) {
-        shapes[i] = shapes[i].transform(transformMatrix);
+    if (!source || !goalFormat) {
+        console.log("source or goal-format params are not specified.")
+        process.exit(1);
     }
-}
 
-function getTransformationMatrix() {
-    return MathUtils.multiplyMatrices(MathUtils.getScalingMatrix(500, 500, 500),
-        MathUtils.multiplyMatrices(MathUtils.getRotationXMatrix(MathUtils.degToRad(90)),
-            MathUtils.getTranslationMatrix(10, 0, 0)));
-}
+    const {name: inputFileName, ext} = path.parse(source);
 
-function printCow() {
-    const transformMatrix = getTransformationMatrix();
+    const supportedExtensions = Object.values(ImageExtensions).values();
 
-    // prepare screen
-    const origin = new Vector(0, -0.03, 0);
-    const screen = new Screen(screenWidth, screenHeight, origin).transform(transformMatrix);
+    let inputExtensionSupported = false;
+    let outputExtensionSupported = false;
 
-    // prepare camera
-    const cameraOrigin = new Vector(0, -2, 0);
-    const cameraLookAt = new Vector(1, 0, 0);
-    const camera = new Camera(cameraOrigin, cameraLookAt).transform(transformMatrix);
+    for (let extension of supportedExtensions) {
+        if (ext.substring(1) === extension) {
+            inputExtensionSupported = true;
+        }
+        if (goalFormat === extension) {
+            outputExtensionSupported = true;
+        }
+    }
 
-    // prepare light
-    const lightDirection = new Vector(-0.2, 1, -0.3);
-    const light = new Light(lightDirection, colors.white).transform(transformMatrix);
+    if (!inputExtensionSupported || !outputExtensionSupported) {
+        console.log("Only the following extensions are supported: ", supportedExtensions)
+    }
 
-    // parse .obj file
-    const fileParser = new FileParser();
-    let shapes: Shape[] = fileParser.parseOBJFile('input/cow.obj');
-    const plane = getPlane(shapes);
-    shapes = [...shapes, plane];
+    console.log('Filename:', inputFileName);
+    console.log('Extension:', ext);
 
-    // prepare shapes
-    transformShapes(shapes, transformMatrix);
+    const imagePluginLoader = new ImagePluginLoader();
+    const image = (await imagePluginLoader.loadImageReader(ext.substring(1))).read(source);
 
-    const rayTracer = new RayTracer(screen, camera, shapes, light);
+    const directory = path.dirname(source);
+    const newFilePath = path.join(directory, `${inputFileName}.${goalFormat}`);
+    console.log("new file path:", newFilePath);
 
-    // perform ray tracing
-    const image = rayTracer.trace();
-
-    // output results
-    const textFileImageWriter = new TextFileImageWriter();
-    textFileImageWriter.write(image, 'out/console-output.txt');
-    const bmpImageWriter: ImageWriter = new BMPImageWriter();
-    bmpImageWriter.write(image, 'out/result.bmp');
-    const ppmImageWriter = new PPMImageWriter();
-    ppmImageWriter.write(image, 'out/result.ppm');
-}
-
-printCow();
+    (await imagePluginLoader.loadImageWriter(goalFormat)).write(image, newFilePath);
+})();

@@ -23,3 +23,5 @@ export class PPMImageWriter implements ImageWriter {
         fs.writeFileSync(filename, ppmData);
     }
 }
+
+export default new PPMImageWriter();

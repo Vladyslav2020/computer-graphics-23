@@ -37,3 +37,5 @@ export class PpmImageReader implements ImageReader {
         return pixels;
     }
 }
+
+export default new PpmImageReader();

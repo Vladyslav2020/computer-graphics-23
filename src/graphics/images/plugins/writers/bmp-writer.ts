@@ -66,3 +66,5 @@ export class BMPImageWriter implements ImageWriter {
         return bmpBuffer;
     }
 }
+
+export default new BMPImageWriter();

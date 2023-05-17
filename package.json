@@ -4,7 +4,7 @@
   "description": "Computer Graphics 2023",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start": "tsc && node dist/index.js --source=out/cow-with-shades.ppm --goal-format=bmp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/Vladyslav2020/computer-graphics-23#readme",
   "devDependencies": {
-    "@types/node": "^18.15.11"
+    "@types/node": "^18.16.6"
+  },
+  "dependencies": {
+    "crc": "^4.3.2",
+    "zlib": "^1.0.5"
   }
 }

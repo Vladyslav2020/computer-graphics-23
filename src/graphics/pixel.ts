@@ -17,6 +17,14 @@ export class Pixel {
         };
     }
 
+    public getBytes(): number {
+        const r = this._rgbColor.r << 24;
+        const g = this._rgbColor.g << 16;
+        const b = this._rgbColor.b << 8;
+        const i = Math.floor(this._intensity * 255);
+        return r | g | b | i;
+    }
+
     set rgbColor(value: RGBColor) {
         this._rgbColor = value;
     }
